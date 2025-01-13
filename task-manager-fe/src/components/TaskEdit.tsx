@@ -1,0 +1,115 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getTask, updateTask } from '../api'; // Import the necessary API functions
+
+interface Task {
+  _id: string;
+  title: string;
+  description: string;
+  status: string;
+  dueDate: string;
+}
+
+const EditTask: React.FC = () => {
+  const { id } = useParams(); // Get the task ID from the URL
+  const navigate = useNavigate();
+  const [task, setTask] = useState<Task | null>(null); // State to hold the task data
+  const [formData, setFormData] = useState<Task>({
+    _id: '',
+    title: '',
+    description: '',
+    status: '',
+    dueDate: '',
+  });
+
+  // Fetch the task details when the component mounts
+  useEffect(() => {
+    if (id) {
+      fetchTaskDetails(id);
+    }
+  }, [id]);
+
+  const fetchTaskDetails = async (taskId: string) => {
+    try {
+      const response = await getTask(taskId);
+      setTask(response.data); // Set the task data
+      setFormData(response.data); // Pre-fill the form with the task data
+    } catch (error) {
+      console.error('Error fetching task details:', error);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (id) {
+        await updateTask(id, formData); // Update the task using the API
+        navigate('/tasks'); // Redirect to the tasks list after successful update
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
+
+  if (!task) {
+    return <p>Loading task details...</p>; // Show loading text while task details are being fetched
+  }
+
+  return (
+    <div>
+      <h1>Edit Task</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="status">Status:</label>
+          <input
+            type="text"
+            id="status"
+            name="status"
+            value={formData.status}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="dueDate">Due Date:</label>
+          <input
+            type="date"
+            id="dueDate"
+            name="dueDate"
+            value={formData.dueDate}
+            onChange={handleInputChange}
+          />
+        </div>
+        <button type="submit">Update Task</button>
+      </form>
+    </div>
+  );
+};
+
+export default EditTask;
