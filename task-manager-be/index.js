@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const authRoutes = require('./routes/auth');  // Import the auth routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +31,7 @@ const taskSchema = new mongoose.Schema({
 const Task = mongoose.model('Task', taskSchema);
 
 // Routes
+app.use('/api/auth', authRoutes);
 
 // Welcome Route
 app.get('/', (req, res) => {

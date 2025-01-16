@@ -7,6 +7,8 @@ import TaskList from '../components/TaskList';
 import TaskForm from '../components/TaskForm';
 import EditTask from '../components/TaskEdit';
 import '../assets/styles.css'; 
+import Signup from '../pages/Signup';
+import Login from '../pages/Login';
 
 
 const AppRoutes: React.FC = () => {
@@ -15,6 +17,8 @@ const AppRoutes: React.FC = () => {
         <Header />
         <div className="container">
           <Routes>
+            <Route path="/" element={<Login />}/>
+            <Route path="/signup" element= {<Signup />}/>
           <Route path="/" element={<TaskList />} />
             <Route path="/tasks" element={<TaskList />} />
             <Route path="/create-task" element={<TaskForm />} />

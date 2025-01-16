@@ -2,6 +2,15 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:3000/tasks'; // Adjust as per your backend URL
 
+
+export const signup = async (userData: { username: string; email: string; password: string }) => {
+  return await axios.post(`${API_BASE_URL}/signup`, userData);
+};
+
+export const login = async (userData: { email: string; password: string }) => {
+  return await axios.post(`http://localhost:3000/login`, userData);
+};
+
 // Fetch all tasks
 export const getTasks = async () => {
   return await axios.get(API_BASE_URL);
