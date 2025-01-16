@@ -1,0 +1,55 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Build output
+dist/
+build/
+out/
+
+# Coverage directories
+coverage/
+.nyc_output/
+*.lcov
+
+# Debug files
+*.pid
+*.pid.lock
+
+# Database files
+*.sqlite
+*.sqlite3
+db.json
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Testing
+jest-test-results.json
