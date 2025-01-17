@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../authContext/AuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+   const { login } = useAuth();
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +20,7 @@ const Login: React.FC = () => {
       });
 
       if (response.ok) {
+        login();
         const data = await response.json();
         // Store token or handle authentication logic
         localStorage.setItem('token', data.token);

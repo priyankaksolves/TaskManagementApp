@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTask } from '../api';
+import styles from '../styles/TaskForm.module.css'
 
 interface Task {
   title: string;
@@ -40,9 +41,8 @@ const TaskForm: React.FC = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles['form-container']}>
       <h1>Add Task</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div>
         <label>
@@ -109,9 +109,11 @@ const TaskForm: React.FC = () => {
             onChange={handleChange}
           />
         </label>
+        {error && <p className={styles['error-message']}>{error}</p>}
+
       </div>
       <div>
-        <button type="submit">Add Task</button>
+        <button className={styles['task-form-btn']} type="submit">Add Task</button>
       </div>
     </form>
   );
