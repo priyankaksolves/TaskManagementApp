@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Correctly import `useNavigate`
 import { deleteTask, getTasks } from '../api';
+import { AxiosError } from 'axios';
 
 interface Task {
   _id: string;
@@ -23,6 +24,9 @@ const TaskList: React.FC = () => {
       const response = await getTasks();
       setTasks(response.data); // Update state with tasks
     } catch (error) {
+      if ((error as AxiosError).isAxiosError) {
+          navigate('/login'); // Redirect to login
+      } 
       console.error('Error fetching tasks:', error);
     }
   };

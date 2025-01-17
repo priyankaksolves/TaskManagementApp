@@ -33,7 +33,7 @@ const TaskForm: React.FC = () => {
 
     try {
       await createTask(task);
-      navigate('/');
+      navigate('/tasks');
     } catch (err) {
       setError('Failed to create task. Please try again.');
       console.log(err);

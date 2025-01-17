@@ -18,8 +18,9 @@ const AppRoutes: React.FC = () => {
         <div className="container">
           <Routes>
             <Route path="/" element={<Login />}/>
+            <Route path="/login" element={<Login />}/>
             <Route path="/signup" element= {<Signup />}/>
-          <Route path="/" element={<TaskList />} />
+            <Route path="/" element={<TaskList />} />
             <Route path="/tasks" element={<TaskList />} />
             <Route path="/create-task" element={<TaskForm />} />
             <Route path="/edit-task/:id" element={<EditTask />} />

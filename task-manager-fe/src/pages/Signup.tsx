@@ -18,7 +18,7 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='form-container'>
       <h2>Signup</h2>
       <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
       <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />

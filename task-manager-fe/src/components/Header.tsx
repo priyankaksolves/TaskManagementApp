@@ -1,6 +1,7 @@
 // Header.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LogoutButton from '../pages/Logout';
 
 const Header: React.FC = () => {
   return (
@@ -12,6 +13,9 @@ const Header: React.FC = () => {
           </li>
           <li>
             <Link to="/create-task">Create Task</Link>
+          </li>
+          <li>
+          <LogoutButton />
           </li>
         </ul>
       </nav>

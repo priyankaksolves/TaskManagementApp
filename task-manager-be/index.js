@@ -1,9 +1,12 @@
+// index.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');  // Import the auth routes
+const verifyToken = require('./middleware/authMiddleware'); // Import the middleware
+const Task = require('./schema/task'); // Import the Task schema
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,16 +22,6 @@ mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB', err));
-
-// Define Task Schema and Model
-const taskSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, default: '' },
-  status: { type: String, enum: ['pending', 'in-progress', 'completed'], default: 'pending' },
-  dueDate: { type: Date },
-});
-
-const Task = mongoose.model('Task', taskSchema);
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -50,7 +43,7 @@ app.post('/tasks', async (req, res) => {
 });
 
 // Get All Tasks
-app.get('/tasks', async (req, res) => {
+app.get('/tasks', verifyToken, async (req, res) => {
   try {
     const tasks = await Task.find();
     res.json(tasks);

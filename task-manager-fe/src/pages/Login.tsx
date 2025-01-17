@@ -20,7 +20,7 @@ const Login: React.FC = () => {
         const data = await response.json();
         // Store token or handle authentication logic
         localStorage.setItem('token', data.token);
-        navigate('/'); // Redirect to the home page
+        navigate('/tasks'); // Redirect to the home page
       } else {
         console.error('Login failed');
       }

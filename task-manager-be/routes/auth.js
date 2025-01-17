@@ -77,4 +77,5 @@ router.get('/protected', verifyToken, (req, res) => {
   res.json({ message: 'Protected content', user: req.user });
 });
 
+
 module.exports = router;
