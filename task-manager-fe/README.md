@@ -1,50 +1,55 @@
-# React + TypeScript + Vite
+# Task Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A task management application that allows users to manage their tasks with features such as login, sign-up, and user management. The app is built with a Node.js and Express backend, MongoDB database, and a React frontend using TypeScript. 
 
-Currently, two official plugins are available:
+## Features
+- **User Authentication**: Sign up and log in to the app with authentication.
+- **Task Management**: Add, edit, delete, and view tasks.
+- **User Profile**: View and update user details.
+- **Responsive UI**: A clean and user-friendly interface for managing tasks.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
+- **Frontend**: 
+  - React with TypeScript
+  - Vite (Development environment)
+  - Axios (HTTP requests)
+  - React Router (for routing)
+- **Backend**: 
+  - Node.js and Express
+  - MongoDB (database)
+  - JWT (JSON Web Token) for authentication
+  - Bcrypt.js (password hashing)
+  - Mongoose (MongoDB ODM)
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Backend Setup
 
-- Configure the top-level `parserOptions` property like this:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/priyankaksolves/task-management-app.git
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+ - cd task-management-app/backend
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+ - Install dependencies
+  - npm install
+ 
+ - Create a .env file in the backend directory and add your environment variables:
+  - MONGODB_URI=your_mongodb_connection_string
+  - JWT_SECRET=your_jwt_secret_key
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+ - run the backend server node index.js
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Frontend Setup
+ - cd task-management-app/frontend
+ - Install dependencies
+ - npm install
+ - Run the application
+ - npm run dev
+ - The frontend should now be accessible at http://localhost:3000.
+
+
+
+
+
+
