@@ -44,13 +44,16 @@ const EditTask: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,10 +70,6 @@ const EditTask: React.FC = () => {
   if (!task) {
     return <p>Loading task details...</p>; // Show loading text while task details are being fetched
   }
-
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setTasks({ ...task, [e.target.name]: e.target.value });
-      };
 
 
   return (

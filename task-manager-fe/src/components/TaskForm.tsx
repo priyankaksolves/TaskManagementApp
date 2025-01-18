@@ -16,6 +16,7 @@ const TaskForm: React.FC = () => {
   const [task, setTask] = useState<Task>({ title: '', description: '', status: 'pending', dueDate: '',   startTime: '',
     stopTime: '', });
     const [error, setError] = useState<string | null>(null);
+    console.log(error);
 
   const navigate = useNavigate();
 
