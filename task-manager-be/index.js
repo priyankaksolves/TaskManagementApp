@@ -1,15 +1,16 @@
-// index.js
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authRoutes = require('./routes/auth');  // Import the auth routes
-const verifyToken = require('./middleware/authMiddleware'); // Import the middleware
-const Task = require('./schema/task'); // Import the Task schema
+const connectDB = require('./databases/db'); // Import the connectDB function
+const authRoutes = require('./routes/auth');
+const taskRoutes = require('./routes/taskRoutes'); // Import task routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Connect to the database
+connectDB();
 
 // Enable CORS for all origins (use with caution in production)
 app.use(cors());
@@ -17,72 +18,13 @@ app.use(cors());
 // Middleware
 app.use(bodyParser.json());
 
-// MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Failed to connect to MongoDB', err));
-
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/tasks', taskRoutes); // Use task routes
 
 // Welcome Route
 app.get('/', (req, res) => {
   res.send('Welcome to the Task Management API!');
-});
-
-// Create a New Task
-app.post('/tasks', async (req, res) => {
-  try {
-    const task = new Task(req.body);
-    await task.save();
-    res.status(201).json(task);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// Get All Tasks
-app.get('/tasks', verifyToken, async (req, res) => {
-  try {
-    const tasks = await Task.find();
-    res.json(tasks);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Get a Single Task by ID
-app.get('/tasks/:id', async (req, res) => {
-  try {
-    const task = await Task.findById(req.params.id);
-    if (!task) return res.status(404).json({ message: 'Task not found' });
-    res.json(task);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Update a Task
-app.put('/tasks/:id', async (req, res) => {
-  try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!task) return res.status(404).json({ message: 'Task not found' });
-    res.json(task);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// Delete a Task
-app.delete('/tasks/:id', async (req, res) => {
-  try {
-    const task = await Task.findByIdAndDelete(req.params.id);
-    if (!task) return res.status(404).json({ message: 'Task not found' });
-    res.json({ message: 'Task deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
 });
 
 // Start the Server

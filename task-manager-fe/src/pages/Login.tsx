@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../authContext/AuthContext';
+import styles from '../styles/login.module.css'
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -27,6 +28,7 @@ const Login: React.FC = () => {
         navigate('/tasks'); // Redirect to the home page
       } else {
         console.error('Login failed');
+        alert('Invalid credentials');
       }
     } catch (error) {
       console.error('Error logging in:', error);

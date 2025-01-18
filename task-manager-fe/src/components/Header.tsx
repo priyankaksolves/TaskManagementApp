@@ -68,13 +68,13 @@ const styles = {
   menuItem: {
     fontSize: '1rem',
   },
-  logoutButton: {
-    background: 'transparent',
-    color: 'white',
-    border: 'none',
-    cursor: 'pointer',
-    textDecoration: 'underline',
-  },
+  // logoutButton: {
+  //   background: 'transparent',
+  //   color: 'white',
+  //   border: 'none',
+  //   cursor: 'pointer',
+  //   textDecoration: 'underline',
+  // },
 };
 
 export default Header;

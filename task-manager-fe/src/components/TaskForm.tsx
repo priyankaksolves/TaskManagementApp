@@ -82,35 +82,11 @@ const TaskForm: React.FC = () => {
           Due Date:
           <input
             name="dueDate"
-            type="date"
+            type="datetime-local"
             value={task.dueDate}
             onChange={handleChange}
           />
         </label>
-      </div>
-      <div>
-        <label>
-          Start Time:
-          <input
-            name="startTime"
-            type="time"
-            value={task.startTime}
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Stop Time:
-          <input
-            name="stopTime"
-            type="time"
-            value={task.stopTime}
-            onChange={handleChange}
-          />
-        </label>
-        {error && <p className={styles['error-message']}>{error}</p>}
-
       </div>
       <div>
         <button className={styles['task-form-btn']} type="submit">Add Task</button>

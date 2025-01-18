@@ -2,24 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTask, updateTask } from '../api'; // Import the necessary API functions
 
+
 interface Task {
   _id: string;
   title: string;
   description: string;
   status: string;
   dueDate: string;
+  startTime: string;
+  stopTime: string;
 }
 
 const EditTask: React.FC = () => {
   const { id } = useParams(); // Get the task ID from the URL
   const navigate = useNavigate();
-  const [task, setTask] = useState<Task | null>(null); // State to hold the task data
+  const [task, setTasks] = useState<Task | null>(null); // State to hold the task data
   const [formData, setFormData] = useState<Task>({
     _id: '',
     title: '',
     description: '',
     status: '',
     dueDate: '',
+    startTime: '',
+    stopTime: '',
   });
 
   // Fetch the task details when the component mounts
@@ -32,7 +37,7 @@ const EditTask: React.FC = () => {
   const fetchTaskDetails = async (taskId: string) => {
     try {
       const response = await getTask(taskId);
-      setTask(response.data); // Set the task data
+      setTasks(response.data); // Set the task data
       setFormData(response.data); // Pre-fill the form with the task data
     } catch (error) {
       console.error('Error fetching task details:', error);
@@ -63,6 +68,11 @@ const EditTask: React.FC = () => {
     return <p>Loading task details...</p>; // Show loading text while task details are being fetched
   }
 
+      const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        setTasks({ ...task, [e.target.name]: e.target.value });
+      };
+
+
   return (
     <div>
       <h1>Edit Task</h1>
@@ -87,23 +97,23 @@ const EditTask: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="status">Status:</label>
-          <input
-            type="text"
-            id="status"
-            name="status"
-            value={formData.status}
-            onChange={handleInputChange}
-          />
-        </div>
+        <label>
+          Status:
+          <select name="status" value={formData.status} onChange={handleInputChange}>
+            <option value="pending">Pending</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+      </div>
         <div>
           <label htmlFor="dueDate">Due Date:</label>
           <input
-            type="date"
+            type="datetime-local"
             id="dueDate"
             name="dueDate"
             value={formData.dueDate}
-            onChange={handleInputChange}
+            onChange={handleInputChange} required
           />
         </div>
         <button type="submit">Update Task</button>
