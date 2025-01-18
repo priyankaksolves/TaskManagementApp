@@ -36,8 +36,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px', textAlign: 'center' }}>
-      <h2>Login</h2>
+    <div style={{ maxWidth: '500px', margin: '50px auto', padding: '30px', textAlign: 'center' }}>
+      <h2 style={{margin: '0 0 30px 0'}}>Login</h2>
       <form onSubmit={handleLogin}>
         <div style={{ marginBottom: '15px' }}>
           <input
