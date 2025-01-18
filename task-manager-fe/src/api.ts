@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:3000/tasks'; // Adjust as per your backend URL
 const AUTH_API_BASE_URL = 'http://localhost:3000/api/auth';
+const USER_API_URL = 'http://localhost:3000/api/users/me';
+
 
 // Helper function to get the token from localStorage
 const getToken = () => localStorage.getItem('token');
@@ -45,3 +47,15 @@ export const updateTask = async (
 ) => {
   return await axios.put(`${API_BASE_URL}/${id}`, task, authHeaders());
 };
+
+
+export const getUserDetails = async () => {
+  const response = await axios.get(USER_API_URL, authHeaders());
+  return response.data;
+};
+
+export const updateUserDetails = async (userData: { name: string; email: string; }) => {
+  const response = await axios.put(USER_API_URL, userData, authHeaders());
+  return response.data;
+};
+

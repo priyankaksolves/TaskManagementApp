@@ -27,6 +27,9 @@ const Header: React.FC = () => {
             <Link to="/create-task">Create Task</Link>
           </li>
           <li style={styles.menuItem}>
+            <Link to="/user-profile">User Profile</Link>
+          </li>
+          <li style={styles.menuItem}>
               <button onClick={handleLogout} style={styles.logoutButton}>
                 Logout
               </button>

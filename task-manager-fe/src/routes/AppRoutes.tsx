@@ -9,6 +9,7 @@ import EditTask from '../components/TaskEdit';
 import '../assets/styles.css'; 
 import Signup from '../pages/Signup';
 import Login from '../pages/Login';
+import UserProfile from '../pages/UserProfile';
 
 
 const AppRoutes: React.FC = () => {
@@ -24,6 +25,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/tasks" element={<TaskList />} />
             <Route path="/create-task" element={<TaskForm />} />
             <Route path="/edit-task/:id" element={<EditTask />} />
+            <Route path="/user-profile" element={<UserProfile />} />
           </Routes>
         </div>
       </Router>

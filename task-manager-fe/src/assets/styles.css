@@ -231,3 +231,14 @@ input:focus {
   flex: 1;
 }
 
+.user-actions {
+  display: flex;
+  gap: 50px; 
+  margin-top: 10px;
+  margin-right: 60%;
+}
+
+.user-actions button {
+  flex: 1;
+}
+

@@ -5,6 +5,8 @@ const cors = require('cors');
 const connectDB = require('./databases/db'); // Import the connectDB function
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/taskRoutes'); // Import task routes
+const userRoutes = require('./routes/userRoutes'); // Import user routes
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +23,8 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/tasks', taskRoutes); // Use task routes
+app.use('/api/users', userRoutes); // Use task routes
+
 
 // Welcome Route
 app.get('/', (req, res) => {
