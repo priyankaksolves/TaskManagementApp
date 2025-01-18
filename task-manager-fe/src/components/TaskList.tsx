@@ -16,6 +16,8 @@ interface Task {
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [statusFilter, setStatusFilter] = useState<string>('all'); // Status filter state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -29,6 +31,10 @@ const TaskList: React.FC = () => {
     fetchTasks();
   }, []);
 
+  useEffect(() => {
+    filterTasks(); // Re-filter tasks whenever the status filter changes
+  }, [statusFilter, tasks]);
+
   const fetchTasks = async () => {
     try {
       const response = await getTasks();
@@ -37,11 +43,20 @@ const TaskList: React.FC = () => {
         dueDate: formatDateTimeForDisplay(task.dueDate), // Format the dueDate
       }));
       setTasks(formattedTasks);
+      setFilteredTasks(formattedTasks); // Initialize filtered tasks
     } catch (error) {
       if ((error as AxiosError).isAxiosError) {
         navigate('/login');
       }
       console.error('Error fetching tasks:', error);
+    }
+  };
+
+  const filterTasks = () => {
+    if (statusFilter === 'all') {
+      setFilteredTasks(tasks);
+    } else {
+      setFilteredTasks(tasks.filter((task) => task.status === statusFilter));
     }
   };
 
@@ -62,11 +77,28 @@ const TaskList: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatusFilter(e.target.value);
+  };
+
   return (
     <div className='task-list-container'>
       <h1>Task List</h1>
+      <div className="filter-container">
+        <label htmlFor="statusFilter">Filter by Status:</label>
+        <select
+          id="statusFilter"
+          value={statusFilter}
+          onChange={handleFilterChange}
+        >
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
       <ul className="task-list">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <li key={task._id}>
             <h3>Title: {task.title}</h3>
             <p>Description: {task.description}</p>
