@@ -20,6 +20,11 @@ const TaskList: React.FC = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const formatDateTimeForDisplay = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toLocaleString(); // Converts to local date and time
+  };
+
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -27,7 +32,11 @@ const TaskList: React.FC = () => {
   const fetchTasks = async () => {
     try {
       const response = await getTasks();
-      setTasks(response.data);
+      const formattedTasks = response.data.map((task: Task) => ({
+        ...task,
+        dueDate: formatDateTimeForDisplay(task.dueDate), // Format the dueDate
+      }));
+      setTasks(formattedTasks);
     } catch (error) {
       if ((error as AxiosError).isAxiosError) {
         navigate('/login');
@@ -62,7 +71,7 @@ const TaskList: React.FC = () => {
             <h3>Title: {task.title}</h3>
             <p>Description: {task.description}</p>
             <p>Status: {task.status}</p>
-            <p>Created Date: {task.dueDate}</p>
+            <p>Due Date: {task.dueDate}</p>
             <div className='task-actions'>
               <button onClick={() => navigate(`/edit-task/${task._id}`)}>Edit</button>
               <button onClick={() => openDeleteModal(task._id)}>Delete</button>

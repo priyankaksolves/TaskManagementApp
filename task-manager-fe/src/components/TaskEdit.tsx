@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTask, updateTask } from '../api'; // Import the necessary API functions
 
-
 interface Task {
   _id: string;
   title: string;
@@ -27,6 +26,18 @@ const EditTask: React.FC = () => {
     stopTime: '',
   });
 
+  const formatDateTime = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16); // Extract the 'YYYY-MM-DDTHH:mm' format
+  };
+
+  const formatDateTimeForInput = (dateString: string): string => {
+    const date = new Date(dateString);
+    const offset = date.getTimezoneOffset() * 60000; // Offset in milliseconds
+    return new Date(date.getTime() - offset).toISOString().slice(0, 16); // Adjust for local timezone
+  };
+  
+
   // Fetch the task details when the component mounts
   useEffect(() => {
     if (id) {
@@ -37,12 +48,16 @@ const EditTask: React.FC = () => {
   const fetchTaskDetails = async (taskId: string) => {
     try {
       const response = await getTask(taskId);
-      setTasks(response.data); // Set the task data
-      setFormData(response.data); // Pre-fill the form with the task data
+      setTasks(response.data);
+      setFormData({
+        ...response.data,
+        dueDate: formatDateTimeForInput(response.data.dueDate),
+      });
     } catch (error) {
       console.error('Error fetching task details:', error);
     }
   };
+  
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -53,7 +68,6 @@ const EditTask: React.FC = () => {
       [name]: value,
     }));
   };
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +84,6 @@ const EditTask: React.FC = () => {
   if (!task) {
     return <p>Loading task details...</p>; // Show loading text while task details are being fetched
   }
-
 
   return (
     <div>
@@ -96,15 +109,13 @@ const EditTask: React.FC = () => {
           />
         </div>
         <div>
-        <label>
-          Status:
+          <label>Status:</label>
           <select name="status" value={formData.status} onChange={handleInputChange}>
             <option value="pending">Pending</option>
             <option value="in-progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
-        </label>
-      </div>
+        </div>
         <div>
           <label htmlFor="dueDate">Due Date:</label>
           <input
@@ -112,7 +123,8 @@ const EditTask: React.FC = () => {
             id="dueDate"
             name="dueDate"
             value={formData.dueDate}
-            onChange={handleInputChange} required
+            onChange={handleInputChange}
+            required
           />
         </div>
         <button type="submit">Update Task</button>
