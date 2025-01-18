@@ -26,11 +26,6 @@ const EditTask: React.FC = () => {
     stopTime: '',
   });
 
-  const formatDateTime = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toISOString().slice(0, 16); // Extract the 'YYYY-MM-DDTHH:mm' format
-  };
-
   const formatDateTimeForInput = (dateString: string): string => {
     const date = new Date(dateString);
     const offset = date.getTimezoneOffset() * 60000; // Offset in milliseconds
