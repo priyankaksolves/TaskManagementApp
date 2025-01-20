@@ -59,3 +59,10 @@ export const updateUserDetails = async (userData: { name: string; email: string;
   return response.data;
 };
 
+// Assuming you have a function to get the user's notifications
+export const getNotifications = async () => {
+  const response = await axios.get('http://localhost:3000/api/notifications', authHeaders());
+  return response.data;
+};
+
+

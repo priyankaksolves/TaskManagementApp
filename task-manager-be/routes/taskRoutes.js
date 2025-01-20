@@ -2,14 +2,24 @@
 const express = require('express');
 const Task = require('../schema/task');
 const verifyToken = require('../middleware/authMiddleware');
+const Notification = require('../schema/notification');
 
 const router = express.Router();
 
 // Create a New Task
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
   try {
     const task = new Task(req.body);
     await task.save();
+
+        // Create a notification for the user assigned to the task
+        const notification = new Notification({
+          userId: req.user.userId, // Assuming 'assignedTo' is the userId
+          message: `You have been assigned a new task: ${task.title}`,
+        });
+        await notification.save();
+
+
     res.status(201).json(task);
   } catch (err) {
     res.status(400).json({ message: err.message });
