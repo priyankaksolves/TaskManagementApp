@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+  }
+  
+  .listContainer {
+    width: 45%;
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: #fff;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .addButton {
+    background: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .addButton:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+  }
+  
+  .addButton:hover:not(:disabled) {
+    background: #45a049;
+  }
+  

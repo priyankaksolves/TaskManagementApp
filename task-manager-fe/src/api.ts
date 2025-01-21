@@ -72,4 +72,18 @@ export const getNotifications = async () => {
   return response.data;
 };
 
+export const getFriends = async (myUserId: string) => {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/users/friends/${myUserId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`, // Add the token for authentication
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching friends:', error);
+    throw error;
+  }
+};
+
 

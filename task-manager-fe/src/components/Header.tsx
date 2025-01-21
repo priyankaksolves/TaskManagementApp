@@ -33,6 +33,9 @@ const Header: React.FC = () => {
             <Link to="/notifications">Notifications</Link>
           </li>
           <li style={styles.menuItem}>
+            <Link to="/friends">My Friends</Link>
+          </li>
+          <li style={styles.menuItem}>
               <button onClick={handleLogout}>
                 Logout
               </button>

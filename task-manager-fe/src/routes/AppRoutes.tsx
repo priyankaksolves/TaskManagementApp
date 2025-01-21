@@ -11,6 +11,7 @@ import Signup from '../pages/Signup';
 import Login from '../pages/Login';
 import UserProfile from '../pages/UserProfile';
 import NotificationList from '../components/Notifications';
+import FriendsPage from '../pages/FriendsPage';
 
 
 const AppRoutes: React.FC = () => {
@@ -28,6 +29,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/edit-task/:id" element={<EditTask />} />
             <Route path="/user-profile" element={<UserProfile />} />
             <Route path="/notifications" element={<NotificationList />} />
+            <Route path="/friends" element={<FriendsPage/>}/>
           </Routes>
         </div>
       </Router>
