@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createTask } from '../api';
+import { createTask, fetchUsers } from '../api';
 import styles from '../styles/TaskForm.module.css'
 
 interface Task {
@@ -10,15 +10,44 @@ interface Task {
   dueDate: string;
   startTime: string;
   stopTime: string;
+  assignedTo: string;
+}
+
+interface User {
+  _id: string;
+  name: string;
+  username: string;
 }
 
 const TaskForm: React.FC = () => {
   const [task, setTask] = useState<Task>({ title: '', description: '', status: 'pending', dueDate: '',   startTime: '',
-    stopTime: '', });
+    stopTime: '', assignedTo: ''});
     const [error, setError] = useState<string | null>(null);
+    const [users, setUsers] = useState<User[]>([]);
+
     console.log(error);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const usersData = await fetchUsers();
+        console.log('Fetched usersData:', usersData);
+        if (Array.isArray(usersData)) {
+          setUsers(usersData);
+        } else {
+          throw new Error('API did not return an array');
+        }
+      } catch (err) {
+        setError('Failed to load users.');
+        console.error('Error loading users:', err);
+        setUsers([]); // Ensure users is an array even if an error occurs
+      }
+    };
+  
+    loadUsers();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setTask({ ...task, [e.target.name]: e.target.value });
@@ -75,6 +104,17 @@ const TaskForm: React.FC = () => {
             <option value="pending">Pending</option>
             <option value="in-progress">In Progress</option>
             <option value="completed">Completed</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>
+          Assign To:
+          <select name="assignedTo" value={task.assignedTo} onChange={handleChange} required>
+            <option value="" disabled>Select a user</option>
+            {users.map(user => (
+              <option key={user._id} value={user._id}>{user.name || user.username}</option>
+            ))}
           </select>
         </label>
       </div>

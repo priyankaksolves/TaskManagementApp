@@ -38,4 +38,19 @@ router.put('/me', verifyToken, async (req, res) => {
   }
 });
 
+
+router.get('/allusers', verifyToken, async (req, res) => {
+  console.log('Fetching user details for ID:', req.user.userId);
+
+  try {
+    const users = await User.find({}, { _id: 1, name: 1, username: 1 }); // Fetch only necessary fields
+    console.log('BE userRoutes Fetched users:', users); 
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Failed to fetch users');
+  }
+});
+
+
 module.exports = router;

@@ -3,6 +3,7 @@ import { getUserDetails, updateUserDetails } from '../api';
 
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState({
+    username: '',
     name: '',
     email: '',
   });
@@ -15,6 +16,7 @@ const UserProfile: React.FC = () => {
         setUser({
           name: userDetails.name || '', // Fallback to empty string
           email: userDetails.email || '', // Fallback to empty string
+          username: userDetails.username || '',
         });
       } catch (error) {
         console.error('Error fetching user details:', error);
@@ -34,6 +36,7 @@ const UserProfile: React.FC = () => {
       setUser({
         name: updatedUser.name || '', // Fallback to empty string
         email: updatedUser.email || '', // Fallback to empty string
+        username: updatedUser.username || '',
       });
       setIsEditing(false);
     } catch (error) {
@@ -49,7 +52,7 @@ const UserProfile: React.FC = () => {
           Name:
           <input
             name="name"
-            value={user.name || ''} // Fallback to empty string
+            value={user.name || user.username} // Fallback to empty string
             onChange={handleInputChange}
             disabled={!isEditing}
           />

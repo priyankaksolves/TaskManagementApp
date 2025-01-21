@@ -15,6 +15,13 @@ const authHeaders = () => ({
   },
 });
 
+// Get all users
+export const fetchUsers = async () => {
+  const response = await axios.get('http://localhost:3000/api/users/allusers', authHeaders());
+  console.log('API Response:', response.data);
+  return response.data;
+};
+
 // Authentication APIs
 export const signup = async (userData: { username: string; email: string; password: string }) => {
   return await axios.post(`${AUTH_API_BASE_URL}/signup`, userData);

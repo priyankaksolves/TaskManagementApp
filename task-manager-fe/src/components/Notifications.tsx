@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getNotifications } from "../api";
+import styles from '../styles/NotificationList.module.css'
 
 // Define the interface for the notification object
 interface Notification {
@@ -31,17 +32,17 @@ const NotificationList = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Notifications</h2>
-      <ul>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Notifications</h2>
+      <ul className={styles.list}>
         {notifications.length > 0 ? (
           notifications.map((notification) => (
-            <li key={notification._id}>
+            <li key={notification._id} className={styles.item}>
               <p>{notification.message}</p>
             </li>
           ))
         ) : (
-          <p>No notifications available.</p>
+          <p className={styles.empty}>No notifications available.</p>
         )}
       </ul>
     </div>
