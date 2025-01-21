@@ -1,0 +1,13 @@
+{
+  "name": "task-management-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd task-manager-fe && npm run dev",   
+    "start:backend": "cd task-manager-be && node index.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
