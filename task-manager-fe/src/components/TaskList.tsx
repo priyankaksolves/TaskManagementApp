@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteTask, getTasks } from '../api';
+import { deleteTask, getTasks, getTasksByUser, getTasksByFriend } from '../api';
 import { AxiosError } from 'axios';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 
@@ -17,10 +17,12 @@ interface Task {
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
-  const [statusFilter, setStatusFilter] = useState<string>('all'); // Status filter state
+  const [filterOption, setFilterOption] = useState<string>('all'); // Filter by All, My Tasks, My Friend's Tasks
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const myUserId = localStorage.getItem("userId") || ""; // Get the logged-in user's ID
 
   const formatDateTimeForDisplay = (dateString: string): string => {
     const date = new Date(dateString);
@@ -29,19 +31,27 @@ const TaskList: React.FC = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
-
-  useEffect(() => {
-    filterTasks(); // Re-filter tasks whenever the status filter changes
-  }, [statusFilter, tasks]);
+  }, [filterOption]); // Re-fetch tasks when filter option changes
 
   const fetchTasks = async () => {
     try {
-      const response = await getTasks();
+      let response;
+
+      // Fetch tasks based on selected filter
+      if (filterOption === 'all') {
+        response = await getTasks();
+      } else if (filterOption === 'my-tasks') {
+        response = await getTasksByUser();
+      } else if (filterOption === 'friends-tasks') {
+        response = await getTasksByFriend();
+      }
+
+      debugger;
       const formattedTasks = response.data.map((task: Task) => ({
         ...task,
         dueDate: formatDateTimeForDisplay(task.dueDate), // Format the dueDate
       }));
+
       setTasks(formattedTasks);
       setFilteredTasks(formattedTasks); // Initialize filtered tasks
     } catch (error) {
@@ -52,21 +62,13 @@ const TaskList: React.FC = () => {
     }
   };
 
-  const filterTasks = () => {
-    if (statusFilter === 'all') {
-      setFilteredTasks(tasks);
-    } else {
-      setFilteredTasks(tasks.filter((task) => task.status === statusFilter));
-    }
-  };
-
   const handleDelete = async () => {
     if (!selectedTaskId) return;
     try {
       await deleteTask(selectedTaskId);
       setIsModalOpen(false);
       setSelectedTaskId(null);
-      fetchTasks();
+      fetchTasks(); // Re-fetch tasks after delete
     } catch (error) {
       console.error('Error deleting task:', error);
     }
@@ -78,25 +80,26 @@ const TaskList: React.FC = () => {
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setStatusFilter(e.target.value);
+    setFilterOption(e.target.value);
   };
 
   return (
     <div className='task-list-container'>
       <h1>Task List</h1>
+
       <div className="filter-container">
-        <label htmlFor="statusFilter">Filter by Status:</label>
+        <label htmlFor="filterOption">Filter Tasks:</label>
         <select
-          id="statusFilter"
-          value={statusFilter}
+          id="filterOption"
+          value={filterOption}
           onChange={handleFilterChange}
         >
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
+          <option value="all">All Tasks</option>
+          <option value="my-tasks">My Tasks</option>
+          <option value="friends-tasks">My Friend's Tasks</option>
         </select>
       </div>
+
       <ul className="task-list">
         {filteredTasks.map((task) => (
           <li key={task._id}>

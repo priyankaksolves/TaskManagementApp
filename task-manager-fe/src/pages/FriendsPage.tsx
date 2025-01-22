@@ -24,7 +24,7 @@ const FriendsPage: React.FC = () => {
         setUsers(usersData);
 
         // Fetch user's friends
-        const friendsData = await getFriends(myUserId);
+        const friendsData = await getFriends();
         setFriends(friendsData);
       } catch (error) {
         console.error("Error fetching data:", error);

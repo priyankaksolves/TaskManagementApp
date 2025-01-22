@@ -3,6 +3,8 @@ const express = require('express');
 const Task = require('../schema/task');
 const verifyToken = require('../middleware/authMiddleware');
 const Notification = require('../schema/notification');
+const Friendship = require('../schema/friendship');
+
 
 const router = express.Router();
 
@@ -30,6 +32,36 @@ router.post('/', verifyToken, async (req, res) => {
 router.get('/', verifyToken, async (req, res) => {
   try {
     const tasks = await Task.find();
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// Get Tasks by Friend (My Friend's Tasks)
+router.get('/friends-tasks', verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    // Find friend IDs for the logged-in user
+    const friendships = await Friendship.find({ userId });
+    const friendIds = friendships.map((friendship) => friendship.friendId);
+
+    // Fetch tasks assigned to the user's friends
+    const tasks = await Task.find({ assignedTo: { $in: friendIds } });
+    res.json(tasks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get Tasks by User (My Tasks)
+router.get('/my-tasks', verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const tasks = await Task.find({ assignedTo: userId });
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -68,5 +100,8 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+
 
 module.exports = router;

@@ -55,6 +55,16 @@ export const updateTask = async (
   return await axios.put(`${API_BASE_URL}/${id}`, task, authHeaders());
 };
 
+// New APIs for My Tasks and Friend's Tasks
+export const getTasksByUser = async () => {
+  return await axios.get(`${API_BASE_URL}/my-tasks`, authHeaders());
+};
+
+export const getTasksByFriend = async () => {
+  return await axios.get(`${API_BASE_URL}/friends-tasks`, authHeaders());
+};
+
+// User APIs
 export const getUserDetails = async () => {
   const response = await axios.get(USER_API_URL, authHeaders());
   return response.data;
