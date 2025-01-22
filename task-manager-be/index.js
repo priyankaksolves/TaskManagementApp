@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/taskRoutes'); // Import task routes
 const userRoutes = require('./routes/userRoutes'); // Import user routes
 const notificationRoutes = require('./routes/notificationRoutes'); // Import notification routes
+const friendshipRoutes = require('./routes/friendsRoutes'); // Import friendship routes
 
 
 
@@ -27,6 +28,8 @@ app.use('/api/auth', authRoutes);
 app.use('/tasks', taskRoutes); // Use task routes
 app.use('/api/users', userRoutes); // Use task routes
 app.use('/api/notifications', notificationRoutes); // Use task routes
+app.use('/api/friendship', friendshipRoutes); // Friends routes
+
 
 // Welcome Route
 app.get('/', (req, res) => {

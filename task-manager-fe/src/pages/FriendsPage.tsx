@@ -1,93 +1,111 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "../styles/FriendsPage.module.css";
-import { getFriends } from "../api";
+import { fetchUsers, getFriends, addFriend, removeFriend } from "../api";
 
 interface User {
   _id: string;
-  name: string;
+  username: string;
 }
 
 const FriendsPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [friends, setFriends] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
-
-
-  const myUserId = "myUserId"; // Replace with the logged-in user's ID
+  const myUserId = localStorage.getItem("userId") || ""; // Fetch user ID directly from localStorage
 
   useEffect(() => {
-    // Fetch all users
-    const fetchUsers = async () => {
+    // Fetch all users and friends for the current user
+    const fetchAllData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/users/allusers");
-        setUsers(response.data);
+        setLoading(true);
+
+        // Fetch all users
+        const usersData = await fetchUsers();
+        setUsers(usersData);
+
+        // Fetch user's friends
+        const friendsData = await getFriends(myUserId);
+        setFriends(friendsData);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    // Fetch friends for the current user
-    const fetchFriends = async () => {
-        setLoading(true);
-        try {
-          const myUserId = localStorage.getItem('userId') || ''; // Fetch user ID from localStorage
-          const friendsData = await getFriends(myUserId);
-          setFriends(friendsData);
-        } catch (err) {
-            console.log(err);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchFriends();
+    fetchAllData();
+  }, [myUserId]);
 
-    fetchUsers();
-    fetchFriends();
-  }, []);
-
-
-  if (loading) return <p>Loading friends...</p>;
-
+  // Add a friend
   const handleAddFriend = async (friendId: string) => {
     try {
-      await axios.post("/api/friends", { myUserId, friendId });
-      // Update friends list after adding
+      await addFriend(friendId);
+
       const addedFriend = users.find((user) => user._id === friendId);
-      if (addedFriend) setFriends((prev) => [...prev, addedFriend]);
+      if (addedFriend) {
+        setFriends((prev) => [...prev, addedFriend]);
+      }
     } catch (error) {
       console.error("Error adding friend:", error);
     }
   };
 
+  // Remove a friend
+  const handleRemoveFriend = async (friendId: string) => {
+    try {
+      await removeFriend(friendId);
+
+      setFriends((prev) => prev.filter((friend) => friend._id !== friendId));
+    } catch (error) {
+      console.error("Error removing friend:", error);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+
   return (
     <div className={styles.container}>
+      {/* All Users List */}
       <div className={styles.listContainer}>
         <h2>All Users</h2>
         <ul className={styles.list}>
           {users.map((user) => (
             <li key={user._id} className={styles.item}>
-              <span>{user.name}</span>
-              <button
-                className={styles.addButton}
-                onClick={() => handleAddFriend(user._id)}
-                disabled={friends.some((friend) => friend._id === user._id)}
-              >
-                {friends.some((friend) => friend._id === user._id) ? "Added" : "Add"}
-              </button>
+              <span>{user.username}</span>
+              {friends.some((friend) => friend._id === user._id) ? (
+                <button
+                  className={styles.removeButton}
+                  onClick={() => handleRemoveFriend(user._id)}
+                >
+                  Remove Friend
+                </button>
+              ) : (
+                <button
+                  className={styles.addButton}
+                  onClick={() => handleAddFriend(user._id)}
+                >
+                  Add Friend
+                </button>
+              )}
             </li>
           ))}
         </ul>
       </div>
 
+      {/* Friends List */}
       <div className={styles.listContainer}>
         <h2>My Friends</h2>
         <ul className={styles.list}>
           {friends.length > 0 ? (
             friends.map((friend) => (
               <li key={friend._id} className={styles.item}>
-                <span>{friend.name}</span>
+                <span>{friend.username}</span>
+                <button
+                  className={styles.removeButton}
+                  onClick={() => handleRemoveFriend(friend._id)}
+                >
+                  Remove
+                </button>
               </li>
             ))
           ) : (
