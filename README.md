@@ -51,7 +51,7 @@ My Friends page -
 Login Page-
 ![login](https://github.com/user-attachments/assets/b99f99f1-9aaa-4b51-b563-d22a6d544a6d)
 Sign up page -
-file:///home/priyankaks500/Pictures/signUp.png
+![signUp](https://github.com/user-attachments/assets/d116455f-4f20-4236-b0c5-31b25f3978d3)
 
 
 
