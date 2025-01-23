@@ -12,6 +12,7 @@ interface Task {
   dueDate: string;
   startTime: string;
   stopTime: string;
+  assignedTo : string;
 }
 
 const TaskList: React.FC = () => {
@@ -31,6 +32,7 @@ const TaskList: React.FC = () => {
 
   useEffect(() => {
     fetchTasks();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterOption]); // Re-fetch tasks when filter option changes
 
   const fetchTasks = async () => {
@@ -46,11 +48,10 @@ const TaskList: React.FC = () => {
         response = await getTasksByFriend();
       }
 
-      debugger;
-      const formattedTasks = response.data.map((task: Task) => ({
+      const formattedTasks = response?.data?.map((task: Task) => ({
         ...task,
         dueDate: formatDateTimeForDisplay(task.dueDate), // Format the dueDate
-      }));
+      })) || [];
 
       setTasks(formattedTasks);
       setFilteredTasks(formattedTasks); // Initialize filtered tasks
@@ -84,7 +85,7 @@ const TaskList: React.FC = () => {
   };
 
   return (
-    <div className='task-list-container'>
+    <div className="task-list-container">
       <h1>Task List</h1>
 
       <div className="filter-container">
@@ -100,26 +101,32 @@ const TaskList: React.FC = () => {
         </select>
       </div>
 
-      <ul className="task-list">
-        {filteredTasks.map((task) => (
-          <li key={task._id}>
-            <h3>Title: {task.title}</h3>
-            <p>Description: {task.description}</p>
-            <p>Status: {task.status}</p>
-            <p>Due Date: {task.dueDate}</p>
-            <div className='task-actions'>
-              <button onClick={() => navigate(`/edit-task/${task._id}`)}>Edit</button>
-              <button onClick={() => openDeleteModal(task._id)}>Delete</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {filteredTasks.length === 0 ? (
+        <p>No tasks available</p>
+      ) : (
+        <ul className="task-list">
+          {filteredTasks.map((task) => (
+            <li key={task._id}>
+              <h3>Title: {task.title}</h3>
+              <p>Description: {task.description}</p>
+              <p>Status: {task.status}</p>
+              <p>Due Date: {task.dueDate}</p>
+              <p>Assigned To: {task.assignedTo}</p>
+
+              <div className="task-actions">
+                <button onClick={() => navigate(`/edit-task/${task._id}`)}>Edit</button>
+                <button onClick={() => openDeleteModal(task._id)}>Delete</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <ConfirmDeleteModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
-          setSelectedTaskId(null);
+          setSelectedTaskId(null); // Reset task ID when modal is closed
         }}
         onConfirm={handleDelete}
       />

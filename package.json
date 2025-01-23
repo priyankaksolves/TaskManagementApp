@@ -4,10 +4,16 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
-    "start:frontend": "cd task-manager-fe && npm run dev",   
+    "start:frontend": "cd task-manager-fe && npm run dev",
     "start:backend": "cd task-manager-be && node index.js"
   },
   "devDependencies": {
+    "@types/react": "^19.0.7",
     "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2"
   }
 }

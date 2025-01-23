@@ -6,6 +6,7 @@ const taskSchema = new mongoose.Schema({
   description: { type: String, default: '' },
   status: { type: String, enum: ['pending', 'in-progress', 'completed'], default: 'pending' },
   dueDate: { type: Date },
+  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Add assignedTo field
 });
 
 const Task = mongoose.model('Task', taskSchema);

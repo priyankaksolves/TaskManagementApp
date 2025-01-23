@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/FriendsPage.module.css";
 import { fetchUsers, getFriends, addFriend, removeFriend } from "../api";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 interface User {
   _id: string;
@@ -67,30 +69,30 @@ const FriendsPage: React.FC = () => {
     <div className={styles.container}>
       {/* All Users List */}
       <div className={styles.listContainer}>
-        <h2>All Users</h2>
-        <ul className={styles.list}>
-          {users.map((user) => (
-            <li key={user._id} className={styles.item}>
-              <span>{user.username}</span>
-              {friends.some((friend) => friend._id === user._id) ? (
-                <button
-                  className={styles.removeButton}
-                  onClick={() => handleRemoveFriend(user._id)}
-                >
-                  Remove Friend
-                </button>
-              ) : (
-                <button
-                  className={styles.addButton}
-                  onClick={() => handleAddFriend(user._id)}
-                >
-                  Add Friend
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+  <h2>All Users</h2>
+  <ul className={styles.list}>
+    {users.map((user) => (
+      <li key={user._id} className={styles.item}>
+        <span>{user.username}</span>
+        {friends.some((friend) => friend._id === user._id) ? (
+          <button
+          className={styles.removeButton}
+          onClick={() => handleRemoveFriend(user._id)}
+        >
+          Remove Friend
+        </button>
+        ) : (
+          <button
+            className={styles.addButton}
+            onClick={() => handleAddFriend(user._id)}
+          >
+            Add Friend
+          </button>
+        )}
+      </li>
+    ))}
+  </ul>
+</div>
 
       {/* Friends List */}
       <div className={styles.listContainer}>
@@ -101,11 +103,12 @@ const FriendsPage: React.FC = () => {
               <li key={friend._id} className={styles.item}>
                 <span>{friend.username}</span>
                 <button
-                  className={styles.removeButton}
+                  className={styles.iconButton}
                   onClick={() => handleRemoveFriend(friend._id)}
                 >
-                  Remove
-                </button>
+            <FontAwesomeIcon icon={faTrash} />
+
+            </button>
               </li>
             ))
           ) : (

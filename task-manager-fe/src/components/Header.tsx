@@ -1,12 +1,9 @@
-// Header.tsx
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../authContext/AuthContext';
 
 const Header: React.FC = () => {
-
   const { isLoggedIn, logout } = useAuth();
-  console.log('isLoggedIn', isLoggedIn);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,47 +11,92 @@ const Header: React.FC = () => {
     navigate('/login'); // Redirect after logout
   };
 
-
   return (
-    <header className="header">
+    <header className="header" style={styles.navbar}>
       <nav>
-        <ul className="nav-list">
-          {isLoggedIn && (<>
-            <li style={styles.menuItem}>
-            <Link to="/tasks">Task List</Link>
-          </li>
-          <li style={styles.menuItem}>
-            <Link to="/create-task">Create Task</Link>
-          </li>
-          <li style={styles.menuItem}>
-            <Link to="/user-profile">User Profile</Link>
-          </li>
-          <li style={styles.menuItem}>
-            <Link to="/notifications">Notifications</Link>
-          </li>
-          <li style={styles.menuItem}>
-            <Link to="/friends">My Friends</Link>
-          </li>
-          <li style={styles.menuItem}>
-              <button onClick={handleLogout}>
-                Logout
-              </button>
-            </li>
-          </>)}
+        <ul style={styles.menu}>
+          {isLoggedIn && (
+            <>
+              <li style={styles.menuItem}>
+                <NavLink
+                  to="/tasks"
+                  style={({ isActive }) =>
+                    isActive ? { ...styles.menuItem, ...styles.activeTab } : styles.menuItem
+                  }
+                >
+                  Task List
+                </NavLink>
+              </li>
+              <li style={styles.menuItem}>
+                <NavLink
+                  to="/create-task"
+                  style={({ isActive }) =>
+                    isActive ? { ...styles.menuItem, ...styles.activeTab } : styles.menuItem
+                  }
+                >
+                  Create Task
+                </NavLink>
+              </li>
+              <li style={styles.menuItem}>
+                <NavLink
+                  to="/user-profile"
+                  style={({ isActive }) =>
+                    isActive ? { ...styles.menuItem, ...styles.activeTab } : styles.menuItem
+                  }
+                >
+                  User Profile
+                </NavLink>
+              </li>
+              <li style={styles.menuItem}>
+                <NavLink
+                  to="/notifications"
+                  style={({ isActive }) =>
+                    isActive ? { ...styles.menuItem, ...styles.activeTab } : styles.menuItem
+                  }
+                >
+                  Notifications
+                </NavLink>
+              </li>
+              <li style={styles.menuItem}>
+                <NavLink
+                  to="/friends"
+                  style={({ isActive }) =>
+                    isActive ? { ...styles.menuItem, ...styles.activeTab } : styles.menuItem
+                  }
+                >
+                  My Friends
+                </NavLink>
+              </li>
+              <li style={styles.menuItem}>
+                <button onClick={handleLogout}>Logout</button>
+              </li>
+            </>
+          )}
 
           {!isLoggedIn && (
-          <>
-            <li style={styles.menuItem}>
-              {/* <button onClick={login}>Login</button> */}
-              <a href="/login">Login</a>
+            <>
+              <li style={styles.menuItem}>
+                <NavLink
+                  to="/login"
+                  style={({ isActive }) =>
+                    isActive ? { ...styles.menuItem, ...styles.activeTab } : styles.menuItem
+                  }
+                >
+                  Login
+                </NavLink>
               </li>
-
-            <li style={styles.menuItem}>
-              <a href="/signup">Signup</a>
-            </li>
-          </>
-        )}
-        
+              <li style={styles.menuItem}>
+                <NavLink
+                  to="/signup"
+                  style={({ isActive }) =>
+                    isActive ? { ...styles.menuItem, ...styles.activeTab } : styles.menuItem
+                  }
+                >
+                  Signup
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
@@ -66,24 +108,33 @@ const styles = {
     background: '#333',
     color: 'white',
     padding: '10px 20px',
+    display: 'flex',
+    justifyContent: 'center', // Center the navigation horizontally
   },
   menu: {
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     listStyle: 'none',
-    gap: '20px',
+    gap: '40px', // Adjust gap to create more spacing between tabs
     margin: 0,
     padding: 0,
   },
   menuItem: {
-    fontSize: '1rem',
+    fontSize: '1.1rem',
+    color: 'white',
+    textDecoration: 'none',
+    padding: '10px 15px', // Add padding for better click area
+    borderRadius: '5px', // Rounded corners
+    transition: 'background-color 0.3s ease', // Smooth hover effect
   },
-  // logoutButton: {
-  //   background: 'transparent',
-  //   color: 'white',
-  //   border: 'none',
-  //   cursor: 'pointer',
-  //   textDecoration: 'underline',
-  // },
+  activeTab: {
+    fontWeight: 'bold',
+    textDecoration: 'underline',
+    color: 'yellow',
+    backgroundColor: '#444', // Background for active tab
+  },
 };
 
 export default Header;
+
