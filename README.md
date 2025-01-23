@@ -37,3 +37,8 @@ A task management application that allows users to manage their tasks with featu
  - Run the application
  - npm run dev
  - The frontend should now be accessible at http://localhost:3000.
+
+Task List page-
+![Screenshot from 2025-01-23 13-05-35](https://github.com/user-attachments/assets/c11295dd-3913-438e-ae34-7961593e283a)
+
+
