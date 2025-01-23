@@ -40,5 +40,21 @@ A task management application that allows users to manage their tasks with featu
 
 Task List page-
 ![Screenshot from 2025-01-23 13-05-35](https://github.com/user-attachments/assets/c11295dd-3913-438e-ae34-7961593e283a)
+Create Task -
+![createTask](https://github.com/user-attachments/assets/fdd3fa36-951e-4e46-8fd0-6e585e326964)
+User Profile-
+![UserProfile](https://github.com/user-attachments/assets/a9ca0cbf-640a-4f5a-bee6-0a6d1dee97bd)
+Notification page-
+![noti](https://github.com/user-attachments/assets/a80e8008-505e-41dd-9bfe-f943e0433a91)
+My Friends page -
+![friend](https://github.com/user-attachments/assets/d6ae9420-fe5c-498c-a90d-03615ab95d71)
+Login Page-
+![login](https://github.com/user-attachments/assets/b99f99f1-9aaa-4b51-b563-d22a6d544a6d)
+Sign up page -
+file:///home/priyankaks500/Pictures/signUp.png
+
+
+
+
 
 
