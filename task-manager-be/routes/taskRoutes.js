@@ -101,6 +101,25 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Get Tasks by User ID
+router.get('/user/:userId', verifyToken, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Fetch tasks assigned to the specified user
+    const tasks = await Task.find({ assignedTo: userId });
+
+    if (!tasks || tasks.length === 0) {
+      return res.status(404).json({ message: 'No tasks found for this user' });
+    }
+
+    res.json(tasks);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error while fetching tasks' });
+  }
+});
+
 
 
 

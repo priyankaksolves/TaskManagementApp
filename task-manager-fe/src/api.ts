@@ -64,6 +64,12 @@ export const getTasksByFriend = async () => {
   return await axios.get(`${API_BASE_URL}/friends-tasks`, authHeaders());
 };
 
+// Get Tasks by User ID
+export const getTasksByUserId = async (userId: string) => {
+  const response = await axios.get(`${API_BASE_URL}/user/${userId}`, authHeaders());
+  return response.data;
+};
+
 // User APIs
 export const getUserDetails = async () => {
   const response = await axios.get(USER_API_URL, authHeaders());
