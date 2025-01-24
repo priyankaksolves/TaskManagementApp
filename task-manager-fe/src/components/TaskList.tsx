@@ -108,7 +108,7 @@ const TaskList: React.FC = () => {
               <p>Description: {task.description}</p>
               <p>Status: {task.status}</p>
               <p>Due Date: {task.dueDate}</p>
-              <p>Assigned To: {task.assignedTo}</p>
+              {/* <p>Assigned To: {task.assignedTo}</p> */}
 
               <div className="task-actions">
                 <button onClick={() => navigate(`/edit-task/${task._id}`)}>Edit</button>
