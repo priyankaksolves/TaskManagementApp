@@ -16,14 +16,12 @@ interface Task {
 }
 
 const TaskList: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [filterOption, setFilterOption] = useState<string>('all'); // Filter by All, My Tasks, My Friend's Tasks
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const myUserId = localStorage.getItem("userId") || ""; // Get the logged-in user's ID
 
   const formatDateTimeForDisplay = (dateString: string): string => {
     const date = new Date(dateString);
@@ -53,7 +51,6 @@ const TaskList: React.FC = () => {
         dueDate: formatDateTimeForDisplay(task.dueDate), // Format the dueDate
       })) || [];
 
-      setTasks(formattedTasks);
       setFilteredTasks(formattedTasks); // Initialize filtered tasks
     } catch (error) {
       if ((error as AxiosError).isAxiosError) {
